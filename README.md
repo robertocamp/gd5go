@@ -29,7 +29,7 @@
   - Usually the very first thing you do once you’ve downloaded a project written in Go is to install the modules necessary to compile it.
 4. `touch main.go`
 5. `touch Dockerfile`
-## local development
+## Docker image example: build and push
 1. start the Mac docker daemon
 2. copy src code from https://docs.docker.com/language/golang/build-images/ into main.go
 3. `go get github.com/labstack/echo/v4`
@@ -42,12 +42,35 @@
   - `docker image ls`
 9. **multistage**
   - `docker build -t docker-gs-ping:multistage -f Dockerfile.multistage .`
-## push image to ECR
+### push image to ECR
 1. login:  `aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 240195868935.dkr.ecr.us-east-2.amazonaws.com`
 2. tag: `docker tag 021c0d4a2224 240195868935.dkr.ecr.us-east-2.amazonaws.com/docker-gs-ping:0.0.1`
 3. list:  `docker image ls`
 4. push: `docker push 240195868935.dkr.ecr.us-east-2.amazonaws.com/docker-gs-ping:0.0.1`
 
+## gdgo5 development
+1. delete previous go.mod, go.sum files from demo/example 
+2. re-run `go mod init github.com/roberto_camp/gd5go`
+3. create main.go with basic fiber server
+4. `go run main.go`  --make sure site comes up on localhost:3000
+5. create Dockerfile
+6. start local Docker daemon on mac (app icon)
+7. `docker build --tag gd5go .`
+8. `docker image ls`  --verify image size
+### local smoke test
+- Dockerfile should be able to build image for running on M1 Mac
+- `docker run -p 3000:3000 gd5go`  (3000 is the container port ; 3000 is the browswer port)
+- test in browser: localhost:3000 
+### push image to ECR
+9. create ECR repo for gd5go: `240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go`
+10. tag image for push: `docker tag f48fdc146ae7 240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go:0.0.1`
+11. push image to ECR: `docker push 240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go:0.0.1`
+12. create namespace: `k create -f namespace.yml` (see namespace file in ./k8s)
+13. create deployment, service, ingress: k apply -f gd5go-eks.yml
 ## links
 - https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-create.html
 - https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html
+
+
+docker tag f0b050c652ea 240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go:0.0.3
+docker push 240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go:0.0.3

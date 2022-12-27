@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gd5go
+  namespace: demo
+  labels:
+    app: gd5go
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gd5go
+  template:
+    metadata:
+      labels:
+        app: gd5go
+    spec:
+      containers:
+        - name: gd5go
+          image: 240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go:0.0.3
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gd5go
+  namespace: demo
+  labels:
+    app: gd5go
+spec:
+  selector:
+    app: gd5go
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: LoadBalancer
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gd5go
+  namespace: demo
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  labels:
+    app: gd5go
+
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: gd5go
+            port:
+              number: 80
