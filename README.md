@@ -67,10 +67,36 @@
 11. push image to ECR: `docker push 240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go:0.0.1`
 12. create namespace: `k create -f namespace.yml` (see namespace file in ./k8s)
 13. create deployment, service, ingress: k apply -f gd5go-eks.yml
+## mongodb
+### install dependencies
+go get go.mongodb.org/mongo-driver/bson
+go get go.mongodb.org/mongo-driver/bson/primitive
+go get go.mongodb.org/mongo-driver/mongo
+go get go.mongodb.org/mongo-driver/mongo/options
+### install mongodb (Homebrew)
+`brew tap mongodb/brew`
+`brew install mongodb-community@6.0`
+`mongod --config /opt/homebrew/etc/mongod.conf --fork`
+`ps aux | grep -v grep | grep mongod`
+`mongosh`
+`db.createCollection("fiber_test");`
+`use fiber_test`
+`show dbs`
+### default database
+- The default database in MongoDB is test. If you do not create a new database, the collection is stored in a test database.
+- **Note:** In MongoDB, collections are created only after inserting content! That is, after creating a collection (data table), a document (record) is inserted and actually a collection is created.
+
+use fiber_test
+
+db.createUser(
+  {
+    user: "golangdev",
+    pwd: "password",
+    roles: [ { role: "readWrite", db: "fiber_test" }]
+  }
+);
+
 ## links
 - https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-create.html
 - https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html
-
-
-docker tag f0b050c652ea 240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go:0.0.3
-docker push 240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go:0.0.3
+- https://kb.objectrocket.com/mongo-db/mongodb-create-database-username-password-to-secure-data-467
