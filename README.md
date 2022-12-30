@@ -100,3 +100,4 @@ db.createUser(
 - https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-create.html
 - https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html
 - https://kb.objectrocket.com/mongo-db/mongodb-create-database-username-password-to-secure-data-467
+- mac update and broken dev tools: https://stackoverflow.com/questions/52522565/git-is-not-working-after-macos-update-xcrun-error-invalid-active-developer-pa
