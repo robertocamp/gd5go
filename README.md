@@ -67,10 +67,26 @@
 11. push image to ECR: `docker push 240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go:0.0.1`
 12. create namespace: `k create -f namespace.yml` (see namespace file in ./k8s)
 13. create deployment, service, ingress: k apply -f gd5go-eks.yml
+
 ## links
 - https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-create.html
 - https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html
-
+- https://docs.aws.amazon.com/code-library/latest/ug/go_2_dynamodb_code_examples.html
 
 docker tag f0b050c652ea 240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go:0.0.3
 docker push 240195868935.dkr.ecr.us-east-2.amazonaws.com/gd5go:0.0.3
+
+
+## DynamoDb
+- https://docs.aws.amazon.com/code-library/latest/ug/go_2_dynamodb_code_examples.html
+- https://www.youtube.com/watch?v=ummOosOW4lE
+- https://blog.knoldus.com/a-simple-introduction-to-amazon-dynamodb/
+- https://www.youtube.com/watch?v=Mw8wCj0gkRc
+
+## MAC go environment
+1. `mkdir -p $HOME/go/{bin,src}`
+2. `cd $HOME/go/src && mkdir github.com`
+3. example project setup:
+  + `mkdir newproject`
+  + `cd newproject`
+  + `go mod init github.com/roberto_camp/newproject`
